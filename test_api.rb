@@ -37,6 +37,20 @@ describe "The Weather API" do
     assert_equal response, last_response.body
   end
 
+  it "should support jsonp format" do
+    url = "http://www.nhc.noaa.gov/archive/2013/al10/al102013.fstadv.010.shtml?text"
+    get "/forecast?url=#{url}&format=jsonp&callback=foo"
+    assert last_response.ok?
+    response = [
+      { id: "15/0600Z", north: "22.0N", west: "94.5W", max: "70 KT", gusts: "85 KT" },
+      { id: "15/1800Z", north: "22.7N", west: "95.4W", max: "75 KT", gusts: "90 KT" },
+      { id: "16/0600Z", north: "22.8N", west: "97.0W", max: "75 KT", gusts: "90 KT" },
+      { id: "16/1800Z", north: "22.5N", west: "98.0W", max: "65 KT", gusts: "80 KT" },
+      { id: "17/1800Z", north: "22.0N", west: "99.0W", max: "30 KT", gusts: "40 KT" }
+    ].to_json
+    assert_equal "foo(#{response});", last_response.body
+  end
+
   it "should not break with bogus urls" do
     get "/forecast?url=fubar"
     assert_match(/Invalid port number/, last_response.body)

@@ -23,6 +23,11 @@ get '/forecast' do
   matches.each do |match|
     entries << { id: match[0], north: match[1], west: match[2], max: match[3], gusts: match[4] }
   end
-  entries.to_json
+
+  if params[:format] == 'jsonp'
+    "#{ params[:callback] || 'callback' }(#{ entries.to_json });"
+  else
+    entries.to_json
+  end
 end
 
