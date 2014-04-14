@@ -18,10 +18,10 @@ get '/forecast' do
   end
 
   entries = []
-  regex = /FORECAST VALID (\d+\/[0-9A-Z]+) (\d+.\d+N)\s+(\d+.\d+W)/
+  regex = /FORECAST VALID (\d+\/[0-9A-Z]+) (\d+.\d+N)\s+(\d+.\d+W)\s+MAX WIND\s+(\d+ KT).+GUSTS\s+(\d+ KT)/
   matches = res.body.scan(regex)
   matches.each do |match|
-    entries << { id: match[0], north: match[1], west: match[2] }
+    entries << { id: match[0], north: match[1], west: match[2], max: match[3], gusts: match[4] }
   end
   entries.to_json
 end

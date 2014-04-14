@@ -28,11 +28,11 @@ describe "The Weather API" do
     get "/forecast?url=#{url}"
     assert last_response.ok?
     response = [
-      { id: "13/0600Z", north: "19.7N", west: "94.7W" },
-      { id: "13/1800Z", north: "19.5N", west: "95.2W" },
-      { id: "14/0600Z", north: "19.3N", west: "95.3W" },
-      { id: "14/1800Z", north: "19.3N", west: "95.0W" },
-      { id: "15/1800Z", north: "20.7N", west: "95.9W" }
+      { id: "13/0600Z", north: "19.7N", west: "94.7W", max: "30 KT", gusts: "40 KT" },
+      { id: "13/1800Z", north: "19.5N", west: "95.2W", max: "35 KT", gusts: "45 KT" },
+      { id: "14/0600Z", north: "19.3N", west: "95.3W", max: "40 KT", gusts: "50 KT" },
+      { id: "14/1800Z", north: "19.3N", west: "95.0W", max: "45 KT", gusts: "55 KT" },
+      { id: "15/1800Z", north: "20.7N", west: "95.9W", max: "45 KT", gusts: "55 KT" }
     ].to_json
     assert_equal response, last_response.body
   end
