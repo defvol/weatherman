@@ -43,14 +43,24 @@ get '/advisory' do
   end
 
   entry = {}
-  regex = /LOCATION\.{3}(.+)\s+ABOUT\s+(.+)\s+.+\.{3}(\d+ KM\/H)\s+.+\s+.+\.{3}(\d* MB)/
+
+  # Return empty if unparsable
+  error_message = "This doesn't look like a Public Advisory"
+  return { error: error_message }.to_json if res.body.scan(/ADVISORY NUMBER\s+\d+/).empty?
+
+  res.body.scan(/LOCATION\.{3}(.+)/).each do |m|
+    entry['location'] = location_to_hash(m[0])
+  end
+
+  entry['about'] = []
+  res.body.scan(/(^ABOUT \d.+)/).each do |m|
+    entry['about'] << m[0]
+  end
+
+  regex = /\.{3}(\d+ KM\/H)\s+.+\s+.+\.{3}(\d* MB)/
   res.body.scan(regex).each do |matches|
-    entry = {
-      location: location_to_hash(matches[0]),
-      about: matches[1],
-      maxSustainedWinds: matches[2],
-      minCentralPressure: matches[3]
-    }
+    entry['maxSustainedWinds']  = matches[0]
+    entry['minCentralPressure'] = matches[1]
   end
 
   if params[:format] == 'jsonp'

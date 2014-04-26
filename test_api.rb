@@ -43,9 +43,25 @@ describe "The Weather API" do
     assert last_response.ok?
     response = {
       location: { north: 19.7, west: 93.6 },
-      about: "175 MI...280 KM ENE OF VERACRUZ MEXICO",
+      about: ["ABOUT 175 MI...280 KM ENE OF VERACRUZ MEXICO"],
       maxSustainedWinds: "55 KM/H",
       minCentralPressure: "1003 MB"
+    }.to_json
+    assert_equal response, last_response.body
+  end
+
+  it "should support multiple ABOUT locations" do
+    url = "http://www.nhc.noaa.gov/archive/2013/al10/al102013.public.010.shtml?text"
+    get "/advisory?url=#{url}"
+    assert last_response.ok?
+    response = {
+      location: { north: 21.3, west: 94.4 },
+      about: [
+        "ABOUT 195 MI...315 KM E OF TUXPAN MEXICO",
+        "ABOUT 275 MI...445 KM SE OF LA PESCA MEXICO"
+      ],
+      maxSustainedWinds: "120 KM/H",
+      minCentralPressure: "987 MB"
     }.to_json
     assert_equal response, last_response.body
   end
@@ -75,7 +91,8 @@ describe "The Weather API" do
     get "/forecast?url=http://www.example.com"
     assert_equal "[]", last_response.body
     get "/advisory?url=http://www.example.com"
-    assert_equal "{}", last_response.body
+    error_message = { error: "This doesn't look like a Public Advisory" }.to_json
+    assert_equal error_message, last_response.body
   end
 
 end
