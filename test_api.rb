@@ -37,6 +37,19 @@ describe "The Weather API" do
     assert_equal response, last_response.body
   end
 
+  it "should parse Public Advisories" do
+    url = "http://www.nhc.noaa.gov/archive/2013/al10/al102013.public.001.shtml?text"
+    get "/advisory?url=#{url}"
+    assert last_response.ok?
+    response = {
+      location: { north: 19.7, west: 93.6 },
+      about: "175 MI...280 KM ENE OF VERACRUZ MEXICO",
+      maxSustainedWinds: "55 KM/H",
+      minCentralPressure: "1003 MB"
+    }.to_json
+    assert_equal response, last_response.body
+  end
+
   it "should support jsonp format" do
     url = "http://www.nhc.noaa.gov/archive/2013/al10/al102013.fstadv.010.shtml?text"
     get "/forecast?url=#{url}&format=jsonp&callback=foo"
@@ -54,11 +67,15 @@ describe "The Weather API" do
   it "should not break with bogus urls" do
     get "/forecast?url=fubar"
     assert_match(/Invalid port number/, last_response.body)
+    get "/advisory?url=fubar"
+    assert_match(/Invalid port number/, last_response.body)
   end
 
   it "should not break with unparsable urls" do
     get "/forecast?url=http://www.example.com"
     assert_equal "[]", last_response.body
+    get "/advisory?url=http://www.example.com"
+    assert_equal "{}", last_response.body
   end
 
 end
