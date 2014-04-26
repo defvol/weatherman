@@ -57,10 +57,11 @@ get '/advisory' do
     entry['about'] << m[0]
   end
 
-  regex = /\.{3}(\d+ KM\/H)\s+.+\s+.+\.{3}(\d* MB)/
+  regex = /\.{3}(\d+ KM\/H)\s+(.+MOVEMENT.+)\s+.+\.{3}(\d* MB)/
   res.body.scan(regex).each do |matches|
     entry['maxSustainedWinds']  = matches[0]
-    entry['minCentralPressure'] = matches[1]
+    entry['presentMovement']  = matches[1]
+    entry['minCentralPressure'] = matches[2]
   end
 
   if params[:format] == 'jsonp'

@@ -45,6 +45,7 @@ describe "The Weather API" do
       location: { north: 19.7, west: 93.6 },
       about: ["ABOUT 175 MI...280 KM ENE OF VERACRUZ MEXICO"],
       maxSustainedWinds: "55 KM/H",
+      presentMovement: "PRESENT MOVEMENT...W OR 270 DEGREES AT 7 MPH...11 KM/H",
       minCentralPressure: "1003 MB"
     }.to_json
     assert_equal response, last_response.body
@@ -61,6 +62,7 @@ describe "The Weather API" do
         "ABOUT 275 MI...445 KM SE OF LA PESCA MEXICO"
       ],
       maxSustainedWinds: "120 KM/H",
+      presentMovement: "PRESENT MOVEMENT...N OR 360 DEGREES AT 7 MPH...11 KM/H",
       minCentralPressure: "987 MB"
     }.to_json
     assert_equal response, last_response.body
