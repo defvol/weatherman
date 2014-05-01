@@ -1,6 +1,8 @@
 require 'sinatra'
 require 'json'
 require 'net/http'
+require_relative 'models/regexp'
+require_relative 'models/object'
 
 get '/ping' do
   'pong'
@@ -17,17 +19,21 @@ get '/forecast' do
     return { error: e.message }.to_json
   end
 
-  entries = []
+  current = hurricane_current(res.body)
+
+  forecasts = []
   regex = /FORECAST VALID (\d+\/\w+) (\d+.\d+N)\s+(\d+.\d+W).*\s+MAX WIND\s+(\d+ KT).+GUSTS\s+(\d+ KT)/
   matches = res.body.scan(regex)
   matches.each do |match|
-    entries << { id: match[0], north: match[1], west: match[2], max: match[3], gusts: match[4] }
+    forecasts << { id: match[0], north: match[1], west: match[2], max: match[3], gusts: match[4] }
   end
 
+  result = { current: current, forecasts: forecasts }
+
   if params[:format] == 'jsonp'
-    "#{ params[:callback] || 'callback' }(#{ entries.to_json });"
+    "#{ params[:callback] || 'callback' }(#{ result.to_json });"
   else
-    entries.to_json
+    result.to_json
   end
 end
 
@@ -69,6 +75,25 @@ get '/advisory' do
   else
     entry.to_json
   end
+end
+
+### Extras
+
+def hurricane_current(bulletin)
+  regexps = [
+    /C\w+ L\w+ NEAR (?<center>\d+\.\d+N\s+\d+\.\d+W)\s+AT\s+(?<effective>.+)/,
+    /PRESENT MOVEMENT (?<movement>.+)/,
+    /E\w+ MIN\w+ C\w+ PRESSURE\s+(?<minCentralPressure>\d+ MB)/
+  ]
+  hurricane = Regexp.batch_as_hash(regexps, bulletin)
+
+  hurricane['winds'] = {
+    maxSustainedWindsWithGusts: bulletin.scan(/^MAX S\w+ WINDS.+./).first || "",
+    direction: bulletin.scan(/(^\d+ KT\.{7}.+)./).flatten || [],
+    seas: bulletin.scan(/^\d+ FT SEAS\.{2}.+/).first || ""
+  }
+
+  hurricane.remove_extra_spacing
 end
 
 # Builds ruby hashes from old school location strings, e.g. "19.7N 94.7W"
