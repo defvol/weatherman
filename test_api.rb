@@ -31,8 +31,8 @@ describe "The Weather API" do
       current: {
         center: "19.7N 93.6W",
         effective: "12/2100Z",
-        movement: "TOWARD THE WEST OR 270 DEGREES AT 6 KT",
         minCentralPressure: "1003 MB",
+        movement: "TOWARD THE WEST OR 270 DEGREES AT 6 KT",
         winds: {
           maxSustainedWindsWithGusts: "MAX SUSTAINED WINDS 30 KT WITH GUSTS TO 40 KT.",
           direction: [],
@@ -89,8 +89,8 @@ describe "The Weather API" do
       current: {
         center: "21.3N 94.4W",
         effective: "14/2100Z",
-        movement: "TOWARD THE NORTH OR 360 DEGREES AT 6 KT",
         minCentralPressure: "987 MB",
+        movement: "TOWARD THE NORTH OR 360 DEGREES AT 6 KT",
         winds: {
           maxSustainedWindsWithGusts: "MAX SUSTAINED WINDS 65 KT WITH GUSTS TO 80 KT.",
           direction: [

@@ -1,4 +1,6 @@
+
 class Object
+
   def remove_extra_spacing
     if self.is_a?(String)
       self.gsub!(/\s+/, " ")
@@ -8,5 +10,6 @@ class Object
       self.each { |e| e.remove_extra_spacing }
     end
   end
+
 end
 

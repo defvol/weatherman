@@ -13,3 +13,7 @@ def app
   Sinatra::Application
 end
 
+def fixture(name)
+  File.open("#{Dir.pwd}/fixtures/#{name}.shtml?text").read
+end
+
