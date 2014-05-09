@@ -20,16 +20,7 @@ get '/forecast' do
 
   hurricane = Hurricane.new
   hurricane.update_from_forecast_advisory(res.body)
-  current = hurricane.to_hash
-
-  forecasts = []
-  regex = /FORECAST VALID (\d+\/\w+) (\d+.\d+N)\s+(\d+.\d+W).*\s+MAX WIND\s+(\d+ KT).+GUSTS\s+(\d+ KT)/
-  matches = res.body.scan(regex)
-  matches.each do |match|
-    forecasts << { id: match[0], north: match[1], west: match[2], max: match[3], gusts: match[4] }
-  end
-
-  result = { current: current, forecasts: forecasts }
+  result = hurricane.to_hash
 
   if params[:format] == 'jsonp'
     "#{ params[:callback] || 'callback' }(#{ result.to_json });"
