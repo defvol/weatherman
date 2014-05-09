@@ -28,10 +28,7 @@ class Hurricane
       seas: bulletin.scan(/^\d+ FT SEAS\.{2}.+/).first || ""
     }.remove_extra_spacing
 
-    regex = /(FORECAST|OUTLOOK) VALID (?<id>\d+\/\w+) (?<north>\d+.\d+N)\s+(?<west>\d+.\d+W)(.+)?\s+MAX WIND\s+(?<max>\d+ KT).+ (?<gusts>\d+ KT)/
-    keys = [:id, :north, :west, :max, :gusts]
-    self.forecasts = bulletin.scan_as_hash_array(regex, keys)
-    self.forecasts.remove_extra_spacing
+    self.forecasts = forecasts_from_bulletin(bulletin).remove_extra_spacing
   end
 
   def to_hash
@@ -41,6 +38,12 @@ class Hurricane
       hash[key] = self.instance_variable_get var
     end
     hash
+  end
+
+  def forecasts_from_bulletin(bulletin)
+    regex = /(FORECAST|OUTLOOK) VALID (?<id>\d+\/\w+) (?<north>\d+.\d+N)\s+(?<west>\d+.\d+W)(.+)?\s+MAX WIND\s+(?<max>\d+ KT).+ (?<gusts>\d+ KT)/
+    keys = [:id, :north, :west, :max, :gusts]
+    bulletin.scan_as_hash_array(regex, keys)
   end
 
 end
