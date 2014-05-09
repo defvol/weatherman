@@ -25,7 +25,9 @@ describe "The Weather API" do
           { id: "13/1800Z", north: "19.5N", west: "95.2W", max: "35 KT", gusts: "45 KT" },
           { id: "14/0600Z", north: "19.3N", west: "95.3W", max: "40 KT", gusts: "50 KT" },
           { id: "14/1800Z", north: "19.3N", west: "95.0W", max: "45 KT", gusts: "55 KT" },
-          { id: "15/1800Z", north: "20.7N", west: "95.9W", max: "45 KT", gusts: "55 KT" }
+          { id: "15/1800Z", north: "20.7N", west: "95.9W", max: "45 KT", gusts: "55 KT" },
+          { id: "16/1800Z", north: "22.0N", west: "97.5W", max: "50 KT", gusts: "60 KT" },
+          { id: "17/1800Z", north: "23.5N", west: "100.0W", max: "25 KT", gusts: "35 KT" }
         ],
         minCentralPressure: "1003 MB",
         movement: "TOWARD THE WEST OR 270 DEGREES AT 6 KT",
@@ -43,7 +45,8 @@ describe "The Weather API" do
           { id: "15/1800Z", north: "22.7N", west: "95.4W", max: "75 KT", gusts: "90 KT" },
           { id: "16/0600Z", north: "22.8N", west: "97.0W", max: "75 KT", gusts: "90 KT" },
           { id: "16/1800Z", north: "22.5N", west: "98.0W", max: "65 KT", gusts: "80 KT" },
-          { id: "17/1800Z", north: "22.0N", west: "99.0W", max: "30 KT", gusts: "40 KT" }
+          { id: "17/1800Z", north: "22.0N", west: "99.0W", max: "30 KT", gusts: "40 KT" },
+          { id: "18/1800Z", north: "21.5N", west: "99.0W", max: "20 KT", gusts: "30 KT" }
         ],
         minCentralPressure: "987 MB",
         movement: "TOWARD THE NORTH OR 360 DEGREES AT 6 KT",
