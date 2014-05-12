@@ -58,14 +58,6 @@ describe "The Weather API" do
     assert_equal last_response.body, response
   end
 
-  it "should catch inland forecasts" do
-    url = "http://www.nhc.noaa.gov/archive/2013/al10/al102013.fstadv.010.shtml?text"
-    get "/forecast?url=#{url}"
-    assert last_response.ok?
-    response = expected[:al102013_fstadv_010].to_json
-    assert_equal response, last_response.body
-  end
-
   it "should not break with bogus urls" do
     get "/forecast?url=fubar"
     response = {}.to_json

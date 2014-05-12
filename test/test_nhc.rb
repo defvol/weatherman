@@ -27,6 +27,19 @@ describe "The NHC module" do
     assert_equal 2, forecasts_found_from(advisory)
   end
 
+  it "should catch FORECAST VALID INLAND" do
+    advisory = %Q{
+      FORECAST VALID 16/1800Z 22.5N  98.0W...INLAND
+      MAX WIND  65 KT...GUSTS  80 KT.
+      50 KT... 20NE  20SE   0SW   0NW.
+      34 KT...100NE  90SE  20SW  20NW.
+
+      FORECAST VALID 17/1800Z 22.0N  99.0W...INLAND
+      MAX WIND  30 KT...GUSTS  40 KT.
+    }
+    assert_equal 2, forecasts_found_from(advisory)
+  end
+
   it "should catch OUTLOOK VALID" do
     advisory = %Q{
       OUTLOOK VALID 16/1800Z 22.0N  97.5W
