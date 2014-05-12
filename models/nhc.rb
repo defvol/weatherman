@@ -1,3 +1,7 @@
+require_relative 'object'
+require_relative 'regexp'
+require_relative 'string'
+
 module NHC
   # Public: Parse content from a NHC forecast advisory page using regex
   #

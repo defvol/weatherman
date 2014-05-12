@@ -1,7 +1,4 @@
 require 'net/http'
-require_relative 'regexp'
-require_relative 'object'
-require_relative 'string'
 require_relative 'nhc'
 
 class Hurricane
