@@ -8,13 +8,13 @@ describe "The Hurricane model" do
   end
 
   it "should update from hash" do
-    @hurricane.update({ center: "31337" })
+    @hurricane.update!({ center: "31337" })
     assert_equal "31337", @hurricane.center
   end
 
   it "should not create new attributes" do
     assert_raises NoMethodError do
-      @hurricane.update({ foo: "bar" })
+      @hurricane.update!({ foo: "bar" })
       @hurricane.foo
     end
   end
@@ -23,6 +23,14 @@ describe "The Hurricane model" do
     url = "http://www.nhc.noaa.gov/archive/2013/al10/al102013.fstadv.020.shtml?text"
     h = Hurricane.from_url(url)
     assert_equal "23.7N 99.9W", h.center
+  end
+
+  it "should parse a NHC forecast advisory" do
+    result = @hurricane.parse_forecast_advisory fixture("al102013.fstadv.020")
+    # Sort the hash because fixtures have keys in ascending order
+    result = Hash[result.sort_by { |k,v| k }]
+    e = expected[:al102013_fstadv_020]
+    assert_equal e, result
   end
 
   it "should be able to convert to a hash" do

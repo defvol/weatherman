@@ -10,7 +10,7 @@ class Hurricane
     self.new.update_from_url!(url)
   end
 
-  def update(attributes = {})
+  def update!(attributes = {})
     begin
       attributes.each { |key, value| self.send("#{key}=", value) }
     rescue NoMethodError
@@ -20,7 +20,7 @@ class Hurricane
 
   def update_from_url!(url)
     if url =~ /nhc\.noaa\.gov.+fstadv/
-      update_from_forecast_advisory download(url)
+      update! parse_forecast_advisory(download(url))
     end
     self
   end
@@ -32,22 +32,30 @@ class Hurricane
     res.body
   end
 
-  def update_from_forecast_advisory(bulletin)
+  # Public: Parse content from a NHC forecast advisory page using regex
+  #
+  # advisory - The String (page content) to be parsed
+  #
+  # Examples
+  #
+  #   parse_forecast_advisory(res.body)
+  #   # => {:center=>"23.7N 99.9W", :effective=>"17/0900Z"}
+  #
+  # Returns a Hash object with parsed values
+  def parse_forecast_advisory(advisory)
     regexps = [
       /C\w+ L\w+ NEAR (?<center>\d+\.\d+N\s+\d+\.\d+W)\s+AT\s+(?<effective>.+)/,
       /PRESENT MOVEMENT (?<movement>.+)/,
       /E\w+ MIN\w+ C\w+ PRESSURE\s+(?<minCentralPressure>\d+ MB)/
     ]
-    hash_from_regexps = Regexp.batch_as_hash(regexps, bulletin)
-    update hash_from_regexps.remove_extra_spacing
-
-    self.winds = {
-      maxSustainedWindsWithGusts: bulletin.scan(/^MAX S\w+ WINDS.+./).first || "",
-      direction: bulletin.scan(/(^\d+ KT\.{7}.+)./).flatten || [],
-      seas: bulletin.scan(/^\d+ FT SEAS\.{2}.+/).first || ""
-    }.remove_extra_spacing
-
-    self.forecasts = forecasts_from_bulletin(bulletin).remove_extra_spacing
+    result = Regexp.batch_as_hash(regexps, advisory)
+    result[:winds] = {
+      maxSustainedWindsWithGusts: advisory.scan(/^MAX S\w+ WINDS.+./).first || "",
+      direction: advisory.scan(/(^\d+ KT\.{7}.+)./).flatten || [],
+      seas: advisory.scan(/^\d+ FT SEAS\.{2}.+/).first || ""
+    }
+    result[:forecasts] = forecasts_from_bulletin(advisory)
+    result.remove_extra_spacing
   end
 
   def to_hash
