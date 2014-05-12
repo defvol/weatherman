@@ -4,6 +4,7 @@ describe "The Hurricane model" do
 
   def setup
     @hurricane = Hurricane.new
+    setup_stub_requests
   end
 
   it "should update from hash" do
@@ -18,9 +19,10 @@ describe "The Hurricane model" do
     end
   end
 
-  it "should update from a NHC forecast advisory" do
-    @hurricane.update_from_forecast_advisory(fixture("al102013.fstadv.020"))
-    assert_equal "23.7N 99.9W", @hurricane.center
+  it "should build from a NHC forecast advisory" do
+    url = "http://www.nhc.noaa.gov/archive/2013/al10/al102013.fstadv.020.shtml?text"
+    h = Hurricane.from_url(url)
+    assert_equal "23.7N 99.9W", h.center
   end
 
   it "should be able to convert to a hash" do

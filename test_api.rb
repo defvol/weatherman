@@ -68,22 +68,16 @@ describe "The Weather API" do
 
   it "should not break with bogus urls" do
     get "/forecast?url=fubar"
-    assert_match(/Invalid port number/, last_response.body)
+    response = {}.to_json
+    assert_equal response, last_response.body
     get "/advisory?url=fubar"
     assert_match(/Invalid port number/, last_response.body)
   end
 
   it "should not break with unparsable urls" do
     get "/forecast?url=http://www.example.com"
-    response = {
-      forecasts: [],
-      winds: {
-        maxSustainedWindsWithGusts: "",
-        direction: [],
-        seas: ""
-      }
-    }
-    assert_equal response.to_json, last_response.body
+    response = {}.to_json
+    assert_equal response, last_response.body
     get "/advisory?url=http://www.example.com"
     error_message = { error: "This doesn't look like a Public Advisory" }.to_json
     assert_equal last_response.body, error_message

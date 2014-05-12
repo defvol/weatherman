@@ -8,20 +8,7 @@ get '/ping' do
 end
 
 get '/forecast' do
-  begin
-    url = URI(params[:url])
-    req = Net::HTTP::Get.new(url.to_s)
-    res = Net::HTTP.start(url.host, url.port) { |http|
-      http.request(req)
-    }
-  rescue Addressable::URI::InvalidURIError => e
-    return { error: e.message }.to_json
-  end
-
-  hurricane = Hurricane.new
-  hurricane.update_from_forecast_advisory(res.body)
-  result = hurricane.to_hash
-
+  result = Hurricane.from_url(params[:url]).to_hash
   if params[:format] == 'jsonp'
     "#{ params[:callback] || 'callback' }(#{ result.to_json });"
   else
