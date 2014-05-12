@@ -1,5 +1,5 @@
 require_relative 'test_helper'
-require_relative 'models/string'
+require_relative '../models/string'
 
 describe "The String hacks" do
 

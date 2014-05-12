@@ -1,5 +1,5 @@
 require_relative 'test_helper'
-require_relative 'models/regexp'
+require_relative '../models/regexp'
 
 describe "The Regexp hacks" do
 
