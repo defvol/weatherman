@@ -8,6 +8,8 @@ get '/ping' do
 end
 
 get '/forecast' do
+  content_type 'application/javascript'
+
   result = Hurricane.from_url(params[:url]).to_hash
   if params[:format] == 'jsonp'
     "#{ params[:callback] || 'callback' }(#{ result.to_json });"
@@ -17,6 +19,8 @@ get '/forecast' do
 end
 
 get '/advisory' do
+  content_type 'application/javascript'
+
   begin
     url = URI(params[:url])
     req = Net::HTTP::Get.new(url.to_s)
