@@ -121,10 +121,10 @@ def expected
       winds: {
         maxSustainedWindsWithGusts: "MAX SUSTAINED WINDS 55 KT WITH GUSTS TO 65 KT.",
         direction: [
-          "50 KT....... 20NE 0SE 0SW 20NW.",
-          "34 KT....... 50NE 20SE 20SW 50NW."
+          "50 KT....... 20NE 0SE 0SW 20NW",
+          "34 KT....... 50NE 20SE 20SW 50NW"
         ],
-        seas: "12 FT SEAS.. 90NE  90SE  60SW  60NW."
+        seas: "12 FT SEAS.. 90NE 90SE 60SW 60NW."
       }
     },
     ep012014_public_007: {
