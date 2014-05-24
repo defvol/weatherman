@@ -13,8 +13,8 @@ def app
   Sinatra::Application
 end
 
-def fixture(type, name)
-  File.open("#{Dir.pwd}/fixtures/#{type}/#{name}.shtml?text").read
+def fixture(file)
+  File.open("#{Dir.pwd}/fixtures/#{file}").read
 end
 
 def setup_stub_requests
