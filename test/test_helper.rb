@@ -13,19 +13,34 @@ def app
   Sinatra::Application
 end
 
-def fixture(name)
-  File.open("#{Dir.pwd}/fixtures/#{name}.shtml?text").read
+def fixture(file)
+  File.open("#{Dir.pwd}/fixtures/#{file}").read
 end
 
 def setup_stub_requests
-  nhc_url = "http://www.nhc.noaa.gov/archive/2013/al10/"
-  Dir["fixtures/*"].each do |path|
+  base_url = "http://www.nhc.noaa.gov/archive/2013/al10"
+  Dir["fixtures/past/*"].each do |path|
     fixture = File.open(path).read
-    filename = path.gsub('fixtures/','')
-    stub_request(:get, nhc_url + filename).
+    filename = path.gsub('fixtures/past','')
+    stub_request(:get, base_url + filename).
       with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
       to_return(:status => 200, :body => fixture, :headers => {})
   end
+
+  # Stubbing manually; using base_url + filename didn't work
+  # see: models/uri.rb#parse_with_hack
+  stub_request(:get, "http://www.nhc.noaa.gov/text/refresh/MIATCPEP1+shtml/232030.shtml").
+    with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
+    to_return(
+      :status => 200,
+      :body => fixture("latest/MIATCPEP1+shtml:240833.shtml?"),
+      :headers => {})
+  stub_request(:get, "http://www.nhc.noaa.gov/text/refresh/MIATCMEP1+shtml/232030.shtml").
+    with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
+    to_return(
+      :status => 200,
+      :body => fixture("latest/MIATCMEP1+shtml:240833.shtml?"),
+      :headers => {})
 
   stub_request(:get, "http://www.example.com/").
     with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
@@ -88,6 +103,41 @@ def expected
         direction: [],
           seas: ""
       }
+    },
+    ep012014_fstadv_007: {
+      center: "11.4N 109.6W",
+      effective: "24/0900Z",
+      forecasts: [
+        { id: "24/1800Z", north: "11.7N", west: "110.3W", max: "65 KT", gusts: "80 KT" },
+        { id: "25/0600Z", north: "11.9N", west: "110.9W", max: "80 KT", gusts: "100 KT" },
+        { id: "25/1800Z", north: "12.2N", west: "111.3W", max: "85 KT", gusts: "105 KT" },
+        { id: "26/0600Z", north: "12.7N", west: "111.6W", max: "90 KT", gusts: "110 KT" },
+        { id: "27/0600Z", north: "14.0N", west: "112.0W", max: "75 KT", gusts: "90 KT" },
+        { id: "28/0600Z", north: "15.5N", west: "112.0W", max: "60 KT", gusts: "75 KT" },
+        { id: "29/0600Z", north: "17.5N", west: "112.0W", max: "45 KT", gusts: "55 KT" }
+      ],
+      minCentralPressure: "994 MB",
+      movement: "TOWARD THE WEST-NORTHWEST OR 295 DEGREES AT 4 KT",
+      winds: {
+        maxSustainedWindsWithGusts: "MAX SUSTAINED WINDS 55 KT WITH GUSTS TO 65 KT.",
+        direction: [
+          "50 KT....... 20NE 0SE 0SW 20NW",
+          "34 KT....... 50NE 20SE 20SW 50NW"
+        ],
+        seas: "12 FT SEAS.. 90NE 90SE 60SW 60NW."
+      }
+    },
+    ep012014_public_007: {
+      location: {
+        north: 11.4,
+        west: 109.6
+      },
+      about: [
+        "ABOUT 630 MI...1020 KM SW OF MANZANILLO MEXICO"
+      ],
+      maxSustainedWinds: "100 KM/H",
+      presentMovement: "PRESENT MOVEMENT...WNW OR 295 DEGREES AT 5 MPH...7 KM/H",
+      minCentralPressure: "994 MB"
     }
   }
 end
