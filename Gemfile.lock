@@ -22,6 +22,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  addressable
   rack-test
   rake
   sinatra
