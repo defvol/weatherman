@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'json'
 require 'net/http'
+require 'addressable/uri'
 require_relative 'models/hurricane'
 
 get '/ping' do
