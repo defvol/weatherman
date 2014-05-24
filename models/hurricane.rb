@@ -21,6 +21,8 @@ class Hurricane
   def update_from_url!(url)
     if url =~ /nhc\.noaa\.gov.+fstadv/
       update! NHC.parse_forecast_advisory(download(url))
+    elsif url =~ /text\/refresh\/MIATCM/
+      update! NHC.parse_forecast_advisory(download(url))
     end
     self
   end

@@ -27,6 +27,15 @@ def setup_stub_requests
       to_return(:status => 200, :body => fixture, :headers => {})
   end
 
+  base_url = "http://www.nhc.noaa.gov/text/refresh"
+  Dir["fixtures/latest/*"].each do |path|
+    fixture = File.open(path).read
+    filename = path.gsub('fixtures/latest','').gsub(':','/')
+    stub_request(:get, base_url + filename).
+      with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
+      to_return(:status => 200, :body => fixture, :headers => {})
+  end
+
   stub_request(:get, "http://www.example.com/").
     with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
     to_return(:status => 200, :body => "<body>Hello world</body>", :headers => {})
@@ -88,6 +97,41 @@ def expected
         direction: [],
           seas: ""
       }
+    },
+    ep012014_fstadv_007: {
+      center: "11.4N 109.6W",
+      effective: "24/0900Z",
+      forecasts: [
+        { id: "24/1800Z", north: "11.7N", west: "110.3W", max: "65 KT", gusts: "80 KT" },
+        { id: "25/0600Z", north: "11.9N", west: "110.9W", max: "80 KT", gusts: "100 KT" },
+        { id: "25/1800Z", north: "12.2N", west: "111.3W", max: "85 KT", gusts: "105 KT" },
+        { id: "26/0600Z", north: "12.7N", west: "111.6W", max: "90 KT", gusts: "110 KT" },
+        { id: "27/0600Z", north: "14.0N", west: "112.0W", max: "75 KT", gusts: "90 KT" },
+        { id: "28/0600Z", north: "15.5N", west: "112.0W", max: "60 KT", gusts: "75 KT" },
+        { id: "29/0600Z", north: "17.5N", west: "112.0W", max: "45 KT", gusts: "55 KT" }
+      ],
+      minCentralPressure: "994 MB",
+      movement: "TOWARD THE WEST-NORTHWEST OR 295 DEGREES AT 4 KT",
+      winds: {
+        maxSustainedWindsWithGusts: "MAX SUSTAINED WINDS 55 KT WITH GUSTS TO 65 KT.",
+        direction: [
+          "50 KT....... 20NE 0SE 0SW 20NW.",
+          "34 KT....... 50NE 20SE 20SW 50NW."
+        ],
+        seas: "12 FT SEAS.. 90NE  90SE  60SW  60NW."
+      }
+    },
+    ep012014_public_007: {
+      location: {
+        north: 11.4,
+        west: 109.6
+      },
+      about: [
+        "ABOUT 630 MI...1020 KM SW OF MANZANILLO MEXICO"
+      ],
+      maxSustainedWinds: "100 KM/H",
+      presentMovement: "PRESENT MOVEMENT...WNW OR 295 DEGREES AT 5 MPH...7 KM/H",
+      minCentralPressure: "994 MB"
     }
   }
 end
