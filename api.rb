@@ -27,6 +27,8 @@ get '/advisory' do
     res = Net::HTTP.start(url.host, url.port) { |http|
       http.request(req)
     }
+  rescue URI::InvalidURIError => e
+    return { error: e.message }.to_json
   rescue Addressable::URI::InvalidURIError => e
     return { error: e.message }.to_json
   end

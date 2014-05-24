@@ -26,10 +26,14 @@ class Hurricane
   end
 
   def download(url)
-    url = URI(url)
-    req = Net::HTTP::Get.new(url.to_s)
-    res = Net::HTTP.start(url.host, url.port) { |http| http.request(req) }
-    res.body
+    begin
+      url = URI(url)
+      req = Net::HTTP::Get.new(url.to_s)
+      res = Net::HTTP.start(url.host, url.port) { |http| http.request(req) }
+      res.body
+    rescue URI::InvalidURIError => e
+      { error: e.message }.to_json
+    end
   end
 
   def to_hash
