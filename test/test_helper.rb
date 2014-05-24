@@ -13,16 +13,16 @@ def app
   Sinatra::Application
 end
 
-def fixture(name)
-  File.open("#{Dir.pwd}/fixtures/#{name}.shtml?text").read
+def fixture(type, name)
+  File.open("#{Dir.pwd}/fixtures/#{type}/#{name}.shtml?text").read
 end
 
 def setup_stub_requests
-  nhc_url = "http://www.nhc.noaa.gov/archive/2013/al10/"
-  Dir["fixtures/*"].each do |path|
+  base_url = "http://www.nhc.noaa.gov/archive/2013/al10"
+  Dir["fixtures/past/*"].each do |path|
     fixture = File.open(path).read
-    filename = path.gsub('fixtures/','')
-    stub_request(:get, nhc_url + filename).
+    filename = path.gsub('fixtures/past','')
+    stub_request(:get, base_url + filename).
       with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
       to_return(:status => 200, :body => fixture, :headers => {})
   end
