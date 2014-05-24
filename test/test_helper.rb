@@ -27,14 +27,20 @@ def setup_stub_requests
       to_return(:status => 200, :body => fixture, :headers => {})
   end
 
-  base_url = "http://www.nhc.noaa.gov/text/refresh"
-  Dir["fixtures/latest/*"].each do |path|
-    fixture = File.open(path).read
-    filename = path.gsub('fixtures/latest','').gsub(':','/')
-    stub_request(:get, base_url + filename).
-      with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
-      to_return(:status => 200, :body => fixture, :headers => {})
-  end
+  # Stubbing manually; using base_url + filename didn't work
+  # see: models/uri.rb#parse_with_hack
+  stub_request(:get, "http://www.nhc.noaa.gov/text/refresh/MIATCPEP1+shtml/232030.shtml").
+    with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
+    to_return(
+      :status => 200,
+      :body => fixture("latest/MIATCPEP1+shtml:240833.shtml?"),
+      :headers => {})
+  stub_request(:get, "http://www.nhc.noaa.gov/text/refresh/MIATCMEP1+shtml/232030.shtml").
+    with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
+    to_return(
+      :status => 200,
+      :body => fixture("latest/MIATCMEP1+shtml:240833.shtml?"),
+      :headers => {})
 
   stub_request(:get, "http://www.example.com/").
     with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
