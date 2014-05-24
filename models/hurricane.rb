@@ -1,5 +1,6 @@
 require 'net/http'
 require_relative 'nhc'
+require_relative 'uri'
 
 class Hurricane
   attr_accessor :center, :effective, :movement, :minCentralPressure, :winds, :forecasts
@@ -29,7 +30,7 @@ class Hurricane
 
   def download(url)
     begin
-      url = URI(url)
+      url = URI.parse_with_hack(url)
       req = Net::HTTP::Get.new(url.to_s)
       res = Net::HTTP.start(url.host, url.port) { |http| http.request(req) }
       res.body

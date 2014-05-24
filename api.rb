@@ -23,9 +23,9 @@ get '/advisory' do
   content_type 'application/javascript'
 
   begin
-    url = URI(params[:url])
-    req = Net::HTTP::Get.new(url.to_s)
-    res = Net::HTTP.start(url.host, url.port) { |http|
+    uri = URI.parse_with_hack(params[:url])
+    req = Net::HTTP::Get.new(uri.to_s)
+    res = Net::HTTP.start(uri.host, uri.port) { |http|
       http.request(req)
     }
   rescue URI::InvalidURIError => e
