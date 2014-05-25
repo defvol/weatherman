@@ -23,7 +23,7 @@ get '/advisory' do
   content_type 'application/javascript'
 
   begin
-    uri = URI.parse_with_hack(params[:url])
+    uri = URI.parse(params[:url])
     req = Net::HTTP::Get.new(uri.to_s)
     res = Net::HTTP.start(uri.host, uri.port) { |http|
       http.request(req)

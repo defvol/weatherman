@@ -36,7 +36,6 @@ def setup_stub_requests
   end
 
   # Stubbing manually; using base_url + filename didn't work
-  # see: models/uri.rb#parse_with_hack
   make_stub_request({
     url: "http://www.nhc.noaa.gov/text/refresh/MIATCPEP1+shtml/232030.shtml",
     response: fixture("latest/MIATCPEP1+shtml:240833.shtml?")

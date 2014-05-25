@@ -22,6 +22,7 @@ describe "The Weather API" do
 
   it "should parse forecasts from Latest Advisories" do
     url = "http://www.nhc.noaa.gov/text/refresh/MIATCMEP1+shtml/232030.shtml"
+    url = CGI.escape(url)
     get "/forecast?url=#{url}"
     expected = fixture("responses/ep012014.fstadv.007.json")
     assert_equal expected, last_response.body
@@ -29,6 +30,7 @@ describe "The Weather API" do
 
   it "should parse public advisories from Latest Advisories" do
     url = "http://www.nhc.noaa.gov/text/refresh/MIATCPEP1+shtml/232030.shtml"
+    url = CGI.escape(url)
     get "/advisory?url=#{url}"
     expected = fixture("responses/ep012014.public.007.json")
     assert_equal expected, last_response.body
