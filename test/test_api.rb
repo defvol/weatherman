@@ -34,14 +34,6 @@ describe "The Weather API" do
     assert_equal expected, last_response.body
   end
 
-  it "should support jsonp format" do
-    url = "http://www.nhc.noaa.gov/archive/2013/al10/al102013.fstadv.001.shtml?text"
-    get "/forecast?url=#{url}&format=jsonp&callback=foo"
-    assert last_response.ok?
-    expected = fixture("responses/al102013.fstadv.001.json")
-    assert_equal "foo(#{expected});", last_response.body
-  end
-
   it "should parse Public Advisories" do
     url = "http://www.nhc.noaa.gov/archive/2013/al10/al102013.public.001.shtml?text"
     get "/advisory?url=#{url}"
@@ -71,6 +63,14 @@ describe "The Weather API" do
       minCentralPressure: "987 MB"
     }.to_json
     assert_equal last_response.body, response
+  end
+
+  it "should support jsonp format" do
+    url = "http://www.nhc.noaa.gov/archive/2013/al10/al102013.fstadv.001.shtml?text"
+    get "/forecast?url=#{url}&format=jsonp&callback=foo"
+    assert last_response.ok?
+    expected = fixture("responses/al102013.fstadv.001.json")
+    assert_equal "foo(#{expected});", last_response.body
   end
 
   it "should not break with bogus urls" do
