@@ -16,27 +16,30 @@ describe "The Weather API" do
     url = "http://www.nhc.noaa.gov/archive/2013/al10/al102013.fstadv.001.shtml?text"
     get "/forecast?url=#{url}"
     assert last_response.ok?
-    assert_equal expected[:al102013_fstadv_001].to_json, last_response.body
+    expected = fixture("responses/al102013.fstadv.001.json")
+    assert_equal expected, last_response.body
   end
 
   it "should parse forecasts from Latest Advisories" do
     url = "http://www.nhc.noaa.gov/text/refresh/MIATCMEP1+shtml/232030.shtml"
     get "/forecast?url=#{url}"
-    assert_equal expected[:ep012014_fstadv_007].to_json, last_response.body
+    expected = fixture("responses/ep012014.fstadv.007.json")
+    assert_equal expected, last_response.body
   end
 
   it "should parse public advisories from Latest Advisories" do
     url = "http://www.nhc.noaa.gov/text/refresh/MIATCPEP1+shtml/232030.shtml"
     get "/advisory?url=#{url}"
-    assert_equal expected[:ep012014_public_007].to_json, last_response.body
+    expected = fixture("responses/ep012014.public.007.json")
+    assert_equal expected, last_response.body
   end
 
   it "should support jsonp format" do
     url = "http://www.nhc.noaa.gov/archive/2013/al10/al102013.fstadv.001.shtml?text"
     get "/forecast?url=#{url}&format=jsonp&callback=foo"
     assert last_response.ok?
-    response = expected[:al102013_fstadv_001].to_json
-    assert_equal "foo(#{response});", last_response.body
+    expected = fixture("responses/al102013.fstadv.001.json")
+    assert_equal "foo(#{expected});", last_response.body
   end
 
   it "should parse Public Advisories" do
