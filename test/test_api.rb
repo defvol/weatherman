@@ -16,7 +16,7 @@ describe "The Weather API" do
     url = "http://www.nhc.noaa.gov/archive/2013/al10/al102013.fstadv.001.shtml?text"
     get "/forecast?url=#{url}"
     assert last_response.ok?
-    expected = fixture("responses/al102013.fstadv.001.json")
+    expected = fixture("expectations/al102013.fstadv.001.json")
     assert_equal expected, last_response.body
   end
 
@@ -24,7 +24,7 @@ describe "The Weather API" do
     url = "http://www.nhc.noaa.gov/text/refresh/MIATCMEP1+shtml/232030.shtml"
     url = CGI.escape(url)
     get "/forecast?url=#{url}"
-    expected = fixture("responses/ep012014.fstadv.007.json")
+    expected = fixture("expectations/ep012014.fstadv.007.json")
     assert_equal expected, last_response.body
   end
 
@@ -32,7 +32,7 @@ describe "The Weather API" do
     url = "http://www.nhc.noaa.gov/text/refresh/MIATCPEP1+shtml/232030.shtml"
     url = CGI.escape(url)
     get "/advisory?url=#{url}"
-    expected = fixture("responses/ep012014.public.007.json")
+    expected = fixture("expectations/ep012014.public.007.json")
     assert_equal expected, last_response.body
   end
 
@@ -71,7 +71,7 @@ describe "The Weather API" do
     url = "http://www.nhc.noaa.gov/archive/2013/al10/al102013.fstadv.001.shtml?text"
     get "/forecast?url=#{url}&format=jsonp&callback=foo"
     assert last_response.ok?
-    expected = fixture("responses/al102013.fstadv.001.json")
+    expected = fixture("expectations/al102013.fstadv.001.json")
     assert_equal "foo(#{expected});", last_response.body
   end
 
