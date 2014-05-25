@@ -38,11 +38,11 @@ def setup_stub_requests
   # Stubbing manually; using base_url + filename didn't work
   make_stub_request({
     url: "http://www.nhc.noaa.gov/text/refresh/MIATCPEP1+shtml/232030.shtml",
-    response: fixture("latest/MIATCPEP1+shtml:240833.shtml?")
+    response: fixture("latest/MIATCPEP1+shtml:232030.shtml")
   })
   make_stub_request({
     url: "http://www.nhc.noaa.gov/text/refresh/MIATCMEP1+shtml/232030.shtml",
-    response: fixture("latest/MIATCMEP1+shtml:240833.shtml?"),
+    response: fixture("latest/MIATCMEP1+shtml:232030.shtml"),
   })
 
   make_stub_request({
