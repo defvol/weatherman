@@ -9,9 +9,10 @@ describe "The NHC module" do
   it "should parse a forecast advisory" do
     result = NHC.parse_forecast_advisory fixture("past/al102013.fstadv.020.shtml?text")
     # Sort the hash because fixtures have keys in ascending order
-    result = Hash[result.sort_by { |k,v| k }]
-    e = expected[:al102013_fstadv_020]
-    assert_equal e, result
+    # Convert keys to strings so we can compare against a JSON fixture
+    result = Hash[result.sort_by { |k,v| k }].deep_stringify_keys!
+    fixture = fixture("responses/al102013.fstadv.020.json")
+    assert_equal JSON.parse(fixture), result
   end
 
   it "should catch FORECAST VALID" do
