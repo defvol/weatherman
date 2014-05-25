@@ -2,4 +2,7 @@ language: ruby
 rvm:
   - "1.9.3"
   - "2.0.0"
+env:
+  - CI: true
+  - secure: "kBSfs4JP9W4XHxoZ82VF32pCZsAhrC+sOu3l0VO1FqQtLpkcgxgDpQHPJ8QrVbtJSxZvlQGPXwNxr7i1gYwViw3HEB850Ga0o7l7wDalPCpKHBhl5cC/tNj4b80AH8Jahta2fftXLhAY2E+eJZDsCsd3pGKTk7sNvNv6OxHZNOU="
 script: bundle exec rake test
