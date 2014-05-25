@@ -10,7 +10,9 @@ require 'minitest/autorun'
 require 'rack/test'
 
 require 'webmock/minitest'
-WebMock.disable_net_connect!(allow_localhost: true)
+WebMock.disable_net_connect!(
+  :allow_localhost => true,
+  :allow => "codeclimate.com")
 
 require_relative '../api'
 require_relative '../models/hash'
