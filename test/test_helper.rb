@@ -35,16 +35,14 @@ def setup_stub_requests
     make_stub_request(url: base_url + filename, response: fixture)
   end
 
-  # Stubbing manually; using base_url + filename didn't work
-  # see: models/uri.rb#parse_with_hack
-  make_stub_request({
-    url: "http://www.nhc.noaa.gov/text/refresh/MIATCPEP1+shtml/232030.shtml",
-    response: fixture("latest/MIATCPEP1+shtml:240833.shtml?")
-  })
-  make_stub_request({
-    url: "http://www.nhc.noaa.gov/text/refresh/MIATCMEP1+shtml/232030.shtml",
-    response: fixture("latest/MIATCMEP1+shtml:240833.shtml?"),
-  })
+  base_url = "http://www.nhc.noaa.gov/text/refresh"
+  Dir["fixtures/latest/*"].each do |path|
+    fixture = File.open(path).read
+    filename = path.gsub('fixtures/latest','')
+      .gsub('+','%2B')
+      .gsub(':','/')
+    make_stub_request(url: base_url + filename, response: fixture)
+  end
 
   make_stub_request({
     url: "http://www.example.com/",

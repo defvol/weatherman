@@ -11,7 +11,7 @@ describe "The NHC module" do
     # Sort the hash because fixtures have keys in ascending order
     # Convert keys to strings so we can compare against a JSON fixture
     result = Hash[result.sort_by { |k,v| k }].deep_stringify_keys!
-    fixture = fixture("responses/al102013.fstadv.020.json")
+    fixture = fixture("expectations/al102013.fstadv.020.json")
     assert_equal JSON.parse(fixture), result
   end
 
