@@ -79,5 +79,20 @@ describe "The NHC module" do
     advisory = "FORECAST VALID 17/1800Z...DISSIPATED"
     assert_equal 0, forecasts_found_from(advisory)
   end
+
+  # See: https://github.com/mxabierto/weatherman/issues/19
+  it "should catch EYE DIAMETER from latest forecasts" do
+    forecast = %Q{
+      ESTIMATED MINIMUM CENTRAL PRESSURE  945 MB
+      EYE DIAMETER     15   NM
+      MAX SUSTAINED WINDS  120 KT WITH GUSTS TO  145 KT.
+      50 KT....... 20NE   0SE   0SW  20NW.
+      34 KT....... 50NE  20SE  20SW  50NW.
+      12 FT SEAS.. 90NE  90SE  60SW  60NW.
+      WINDS AND SEAS VARY GREATLY IN EACH QUADRANT.  RADII IN NAUTICAL
+      MILES ARE THE LARGEST RADII EXPECTED ANYWHERE IN THAT QUADRANT.
+    }
+    assert_equal "15 NM", NHC.parse_forecast_advisory(forecast)[:eyeDiameter]
+  end
 end
 
