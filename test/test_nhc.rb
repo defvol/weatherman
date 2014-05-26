@@ -6,6 +6,16 @@ describe "The NHC module" do
     NHC.parse_forecast_advisory(advisory)[:forecasts].length
   end
 
+  it "should return all hurricane properties as key" do
+    result = NHC.parse_forecast_advisory fixture("past/ep012014.fstadv.015.shtml")
+    # Sort the hash because fixtures have keys in ascending order
+    # Convert keys to strings so we can compare against a JSON fixture
+    result = Hash[result.sort_by { |k,v| k }].deep_stringify_keys!
+    Hurricane.attributes.each do |attr|
+      assert result.has_key?(attr.to_s), "Should include #{attr}"
+    end
+  end
+
   it "should parse a forecast advisory" do
     result = NHC.parse_forecast_advisory fixture("past/al102013.fstadv.020.shtml?text")
     # Sort the hash because fixtures have keys in ascending order
