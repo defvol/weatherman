@@ -3,7 +3,7 @@ require_relative 'nhc'
 
 class Hurricane
   def self.attributes
-    [:center, :effective, :eyeDiameter, :movement, :minCentralPressure, :winds, :forecasts]
+    [:center, :effective, :eyeDiameter, :movement, :minCentralPressure, :time, :winds, :forecasts]
   end
 
   self.attributes.each { |p| attr_accessor p }
