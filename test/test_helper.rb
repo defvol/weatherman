@@ -24,7 +24,7 @@ def app
 end
 
 def fixture(file)
-  File.open("#{Dir.pwd}/fixtures/#{file}").read
+  File.open("#{Dir.pwd}/fixtures/#{file}").read.strip
 end
 
 def setup_stub_requests

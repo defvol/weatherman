@@ -104,5 +104,19 @@ describe "The NHC module" do
     }
     assert_equal "15 NM", NHC.parse_forecast_advisory(forecast)[:eyeDiameter]
   end
+
+  it "should catch time of event from forecasts" do
+    forecast = %Q{
+      HURRICANE AMANDA FORECAST/ADVISORY NUMBER  15
+      NWS NATIONAL HURRICANE CENTER MIAMI FL       EP012014
+      0900 UTC MON MAY 26 2014
+
+      THERE ARE NO COASTAL WATCHES OR WARNINGS IN EFFECT.
+
+      HURRICANE CENTER LOCATED NEAR 13.1N 111.6W AT 26/0900Z
+      POSITION ACCURATE WITHIN  10 NM
+    }
+    assert_equal "0900 UTC MON MAY 26 2014", NHC.parse_forecast_advisory(forecast)[:time]
+  end
 end
 

@@ -18,7 +18,8 @@ module NHC
       /C\w+ L\w+ NEAR (?<center>\d+\.\d+N\s+\d+\.\d+W)\s+AT\s+(?<effective>.+)/,
       /PRESENT MOVEMENT (?<movement>.+)/,
       /E\w+ MIN\w+ C\w+ PRESSURE\s+(?<minCentralPressure>\d+ MB)/,
-      /EYE DIAMETER\s+(?<eyeDiameter>\d+\.?\d*\s+\w+)/
+      /EYE DIAMETER\s+(?<eyeDiameter>\d+\.?\d*\s+\w+)/,
+      /(?<time>\d+ UTC \w+ \w+ \d+ \d+)/
     ]
     result = Regexp.batch_as_hash(regexps, advisory)
 

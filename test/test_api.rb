@@ -24,7 +24,7 @@ describe "The Weather API" do
     url = "http://www.nhc.noaa.gov/archive/2014/ep01/ep012014.fstadv.015.shtml"
     get "/forecast?url=#{url}"
     # Striping tailing spaces, seems like the fixture contains a new line char
-    expected = fixture("expectations/ep012014.fstadv.015.json").strip
+    expected = fixture("expectations/ep012014.fstadv.015.json")
     assert_equal expected, last_response.body
   end
 
