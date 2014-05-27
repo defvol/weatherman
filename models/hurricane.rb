@@ -2,7 +2,11 @@ require 'net/http'
 require_relative 'nhc'
 
 class Hurricane
-  attr_accessor :center, :effective, :movement, :minCentralPressure, :winds, :forecasts
+  def self.attributes
+    [:center, :effective, :eyeDiameter, :movement, :minCentralPressure, :winds, :forecasts]
+  end
+
+  self.attributes.each { |p| attr_accessor p }
 
   include NHC
 

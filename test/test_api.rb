@@ -20,6 +20,14 @@ describe "The Weather API" do
     assert_equal expected, last_response.body
   end
 
+  it "should catch eye diameters in forecasts" do
+    url = "http://www.nhc.noaa.gov/archive/2014/ep01/ep012014.fstadv.015.shtml"
+    get "/forecast?url=#{url}"
+    # Striping tailing spaces, seems like the fixture contains a new line char
+    expected = fixture("expectations/ep012014.fstadv.015.json").strip
+    assert_equal expected, last_response.body
+  end
+
   it "should parse forecasts from Latest Advisories" do
     url = "http://www.nhc.noaa.gov/text/refresh/MIATCMEP1+shtml/232030.shtml"
     url = CGI.escape(url)

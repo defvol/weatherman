@@ -28,11 +28,12 @@ def fixture(file)
 end
 
 def setup_stub_requests
-  base_url = "http://www.nhc.noaa.gov/archive/2013/al10"
+  base_url = "http://www.nhc.noaa.gov/archive"
   Dir["fixtures/past/*"].each do |path|
     fixture = File.open(path).read
     filename = path.gsub('fixtures/past','')
-    make_stub_request(url: base_url + filename, response: fixture)
+    folder = "/#{filename[5..8]}/#{filename[1..4]}"
+    make_stub_request(url: base_url + folder + filename, response: fixture)
   end
 
   base_url = "http://www.nhc.noaa.gov/text/refresh"
