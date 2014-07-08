@@ -15,7 +15,7 @@ module NHC
   # Returns a Hash object with parsed values
   def NHC.parse_forecast_advisory(advisory)
     regexps = [
-      /C\w+ L\w+ NEAR (?<center>\d+\.\d+N\s+\d+\.\d+W)\s+AT\s+(?<effective>.+)/,
+      /C\w+ L\w+ NEAR\s+(?<center>\d+\.\d+N\s+\d+\.\d+W)\s+AT\s+(?<effective>.+)/,
       /PRESENT MOVEMENT (?<movement>.+)/,
       /E\w+ MIN\w+ C\w+ PRESSURE\s+(?<minCentralPressure>\d+ MB)/,
       /EYE DIAMETER\s+(?<eyeDiameter>\d+\.?\d*\s+\w+)/,
@@ -29,7 +29,7 @@ module NHC
       seas: advisory.scan(/^\d+ FT SEAS\.{2}.+/).first || ""
     }
 
-    regex = /(FORECAST|OUTLOOK) VALID (?<id>\d+\/\w+) (?<north>\d+.\d+N)\s+(?<west>\d+.\d+W)(.+)?\s+MAX WIND\s+(?<max>\d+ KT).+ (?<gusts>\d+ KT)/
+    regex = /(FORECAST|OUTLOOK) VALID (?<id>\d+\/\w+)\s+(?<north>\d+.\d+N)\s+(?<west>\d+.\d+W)(.+)?\s+MAX WIND\s+(?<max>\d+ KT).+ (?<gusts>\d+ KT)/
     keys = [:id, :north, :west, :max, :gusts]
     result[:forecasts] = advisory.scan_as_hash_array(regex, keys)
 
